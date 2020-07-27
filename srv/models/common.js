@@ -31,9 +31,36 @@ const getVehicleTypes = () => {
   });
 }
 
-const getLocalization = (locale) => {
+const availableLanguages = () => {
   return new Promise((resolve, reject) => {
-    fs.readFile(__dirname + '/../localization/strings/' + locale + '.json', 'utf-8', (err, file) => {
+    let query = 'SELECT * FROM languages';
+
+    mysql.promise().execute(query)
+      .then(([results]) => {
+        if (!results.length) {
+          return resolve({
+            status: false,
+            result: 'empty_data'
+          });
+        }
+
+        return resolve({
+          status: true,
+          result: results
+        });
+      })
+      .catch((err) => {
+        return reject({
+          status: false,
+          error: err
+        });
+      });
+  })
+}
+
+const getLocalizedStrings = (locale) => {
+  return new Promise((resolve, reject) => {
+    fs.readFile(__dirname + `/../localization/strings/${locale}.json`, 'utf-8', (err, file) => {
       if (err) {
         return reject(err);
       }
@@ -141,7 +168,8 @@ const sortVehiclesByManufacturer = (filteredArray) => {
 
 
 module.exports = {
-  getLocalization,
+  availableLanguages,
+  getLocalizedStrings,
   globalSearch,
   getVehicleTypes
 }

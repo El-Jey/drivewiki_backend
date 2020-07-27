@@ -1,3 +1,4 @@
+{
   "common": {
     "car": "car",
     "motorcycle": "motorcycle"
@@ -13,3 +14,4 @@
     "home_link": "Home",
     "report_about_problem": "Or let us know about the problem."
   }
+}

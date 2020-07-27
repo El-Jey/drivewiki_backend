@@ -1,15 +1,17 @@
-  "common": {
-    "car": "автомобиль",
-    "motorcycle": "мотоцикл"
-  },
-  "header": {
-    "cars": "Автомобили",
-    "motorcycles": "Мотоциклы"
-  },
-  "main_content": {
-    "empty_details_info": "Мы искали везде и, к сожалению, ничего не нашли",
-    "choose_from_list": "Выберите {vehicle} из списка",
-    "home_welcome": "Добро пожаловать на главную страницу Drive Wiki!",
-    "home_link": "На главную",
-    "report_about_problem": "Или сообщите нам о проблеме"
+  {
+    "common": {
+      "car": "автомобиль",
+      "motorcycle": "мотоцикл"
+    },
+    "header": {
+      "cars": "Автомобили",
+      "motorcycles": "Мотоциклы"
+    },
+    "main_content": {
+      "empty_details_info": "Мы искали везде и, к сожалению, ничего не нашли",
+      "choose_from_list": "Выберите {vehicle} из списка",
+      "home_welcome": "Добро пожаловать на главную страницу Drive Wiki!",
+      "home_link": "На главную",
+      "report_about_problem": "Или сообщите нам о проблеме"
+    }
   }

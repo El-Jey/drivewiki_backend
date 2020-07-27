@@ -13,10 +13,24 @@ router.get('/', (req, res, next) => {
 });
 
 /**
+ * Список доступных переводов
+ */
+router.get('/localization/list', (req, res) => {
+  common.availableLanguages()
+    .then((response) => {
+      return res.status(200).json(response);
+    })
+    .catch((error) => {
+      return res.status(500).send(error);
+    });
+  // return res.status(200).json(req.params.locale);
+});
+
+/**
  * Смена локализации
  */
 router.get('/localization/:locale', (req, res) => {
-  common.getLocalization(req.params.locale)
+  common.getLocalizedStrings(req.params.locale)
     .then((response) => {
       return res.status(200).json(response);
     })
