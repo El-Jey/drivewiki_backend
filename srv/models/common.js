@@ -1,5 +1,6 @@
 'use strict';
 const mysql = require('../database');
+const fs = require('fs');
 
 const getVehicleTypes = () => {
   return new Promise(function (resolve, reject) {
@@ -30,8 +31,23 @@ const getVehicleTypes = () => {
   });
 }
 
+const getLocalization = (locale) => {
+  return new Promise((resolve, reject) => {
+    fs.readFile(__dirname + '/../localization/strings/' + locale + '.json', 'utf-8', (err, file) => {
+      if (err) {
+        return reject(err);
+      }
+
+      return resolve({
+        status: true,
+        result: file
+      });
+    })
+  });
+}
+
 const globalSearch = (search) => {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     let statement = '%' + search + '%';
     let query = 'SELECT b.`name` AS brand, m.`name` AS model, m.vehicle_type AS type ' +
       'FROM brands b ' +
@@ -42,16 +58,28 @@ const globalSearch = (search) => {
     mysql.promise().execute(query, [statement])
       .then(([results]) => {
         if (!results.length) {
-          return resolve({status: false, result: 'empty_data'});
+          return resolve({
+            status: false,
+            result: 'empty_data'
+          });
         }
 
         let cars = sortVehiclesByManufacturer(filterByVehicleType(results, 1));
         let motorcycles = sortVehiclesByManufacturer(filterByVehicleType(results, 2));
 
-        return resolve({status: true, result: {cars, motorcycles} });
+        return resolve({
+          status: true,
+          result: {
+            cars,
+            motorcycles
+          }
+        });
       })
       .catch((err) => {
-        return reject({status: false, error: err});
+        return reject({
+          status: false,
+          error: err
+        });
       });
   });
 }
@@ -113,6 +141,7 @@ const sortVehiclesByManufacturer = (filteredArray) => {
 
 
 module.exports = {
+  getLocalization,
   globalSearch,
   getVehicleTypes
 }
