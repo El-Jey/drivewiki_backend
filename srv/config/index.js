@@ -3,7 +3,7 @@
 const config = () => {
   return {
     app: {
-      name: "Cars Wiki"
+      name: "Drive Wiki"
     },
     db: {
       host: "127.0.0.1",

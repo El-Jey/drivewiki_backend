@@ -26,6 +26,16 @@ const getCarsList = (callback) => {
         models = [],
         object = {};
 
+
+
+        // let outputObject = results.map((item) => {
+        //   return item.brand
+        // }).filter((element, index, array) => {
+        //   return array.indexOf(element) == index;
+        // }).reduce((a, key, index) => Object.assign(a, { [index]: {brand: key, models: []} }), []);
+
+
+
       for (var i = 0; i < results.length; i++) {
         if (results.length == 1) {
           models.push(results[i].model);
@@ -79,8 +89,8 @@ const getModelInfo = (data, callback) => {
       let totalInfo = result;
 
       modelDetailedInfo(data, (error, result) => {
-        if (error) {                // TODO: обработку всех ошибок сделать
-          return callback(error, null);
+        if (error) {
+          return callback(null, { totalInfo });
         } else {
           let paragraphs = result;
           let response = {
@@ -129,8 +139,9 @@ const modelTotalInfo = (data, callback) => {
 ** result - object,
 */
 const modelDetailedInfo = (data, callback) => {
-  let query = 'SELECT di.paragraph_title AS title, di.description FROM brands b '   +
-              'JOIN models m ON b.id = m.brand_id '                                 +
+  let query = 'SELECT di.paragraph_title AS title, di.description '                  +
+              'FROM brands b '                                                      +
+              'JOIN models m ON m.brand_id = b.id '                                 +
               'JOIN model_detailed_info di '                                        +
               'ON di.model_id = m.id '                                              +
               'WHERE b.`name` = ? '                                                 +

@@ -15,7 +15,7 @@ const getVehicleTypes = () => {
         //   });
         // }
 
-        console.log(results);
+        // console.log(results);
 
         return resolve({
           status: true,
@@ -76,11 +76,11 @@ const getLocalizedStrings = (locale) => {
 const globalSearch = (search) => {
   return new Promise(function (resolve, reject) {
     let statement = '%' + search + '%';
-    let query = 'SELECT b.`name` AS brand, m.`name` AS model, m.vehicle_type AS type ' +
-      'FROM brands b ' +
-      'INNER JOIN models m ON b.id = m.brand_id ' +
-      'WHERE b.`name` LIKE ? ' +
-      'ORDER by b.`name`';
+    let query = 'SELECT b.`name` AS brand, m.`name` AS model, m.vehicle_type AS type '  +
+                'FROM brands b '                                                        +
+                'INNER JOIN models m ON b.id = m.brand_id '                             +
+                'WHERE b.`name` LIKE ? '                                                +
+                'ORDER by b.`name`';
 
     mysql.promise().execute(query, [statement])
       .then(([results]) => {

@@ -131,7 +131,8 @@ const modelTotalInfo = (data, callback) => {
  ** result - object,
  */
 const modelDetailedInfo = (data, callback) => {
-  let query = 'SELECT di.paragraph_title AS title, di.description FROM brands b '   +
+  let query = 'SELECT di.paragraph_title AS title, di.description '                 +
+              'FROM brands b '                                                      +
               'JOIN models m ON b.id = m.brand_id '                                 +
               'JOIN model_detailed_info di '                                        +
               'ON di.model_id = m.id '                                              +

@@ -1,6 +1,6 @@
 {
-  "name": "CarsWiki",
-  "description": "My first VueJS + NodeJS project",
+  "name": "drive_wiki",
+  "description": "Drive encyclopedia",
   "version": "1.0.0",
   "author": "Oleg Frolov <olegfunictech@gmail.com>",
   "license": "MIT",
@@ -8,7 +8,7 @@
   "scripts": {
     "start": "node server.js",
     "devstart": "nodemon server.js",
-    "debug": "SET DEBUG=cars.application.dev:* & npm run devstart"
+    "debug": "SET DEBUG=drive.wiki.application.dev:* & npm run devstart"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
