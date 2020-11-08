@@ -7,7 +7,8 @@
     "cars": "Автомобили",
     "vehiclesError": "Нет данных о транспортных средствах",
     "motorcycles": "Мотоциклы",
-    "vehicle": "Вид транспорта"
+    "vehicle": "Вид транспорта",
+    "empty_search_results": "Информация не найдена"
   },
   "main_content": {
     "empty_details_info": "Мы искали везде и, к сожалению, ничего не нашли",

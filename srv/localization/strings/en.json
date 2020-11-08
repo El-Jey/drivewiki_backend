@@ -7,7 +7,8 @@
     "cars": "Cars",
     "vehiclesError": "No vehicle data",
     "motorcycles": "Motorcycles",
-    "vehicle": "Vehicle"
+    "vehicle": "Vehicle",
+    "empty_search_results": "Information not found"
   },
   "main_content": {
     "empty_details_info": "We searched everywhere and, unfortunately, did not find anything",
