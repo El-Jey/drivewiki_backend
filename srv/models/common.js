@@ -73,16 +73,24 @@ const getLocalizedStrings = (locale) => {
   });
 }
 
-const globalSearch = (search) => {
+const globalSearch = (request) => {
   return new Promise(function (resolve, reject) {
-    let statement = '%' + search + '%';
+    let searchString = '%' + request.searchString + '%';
+    let types = request.filters.vehicles;
+
     let query = 'SELECT b.`name` AS brand, m.`name` AS model, m.vehicle_type AS type '  +
                 'FROM brands b '                                                        +
                 'INNER JOIN models m ON b.id = m.brand_id '                             +
                 'WHERE b.`name` LIKE ? '                                                +
+                'OR m.`name` LIKE ? '                                                   +
+                'AND m.vehicle_type IN (?) '                                            +
                 'ORDER by b.`name`';
 
-    mysql.promise().execute(query, [statement])
+    let data = [searchString, searchString, [types]];
+
+    console.log(query);
+
+    mysql.promise().execute(query, data)
       .then(([results]) => {
         if (!results.length) {
           return resolve({

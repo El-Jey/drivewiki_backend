@@ -8,7 +8,12 @@
     "vehiclesError": "No vehicle data",
     "motorcycles": "Motorcycles",
     "vehicle": "Vehicle",
-    "empty_search_results": "Information not found"
+    "empty_search_results": "Information not found",
+    "search_settings": {
+      "all": "All",
+      "cars": "Cars",
+      "motorcycles": "Motorcycles"
+    }
   },
   "main_content": {
     "empty_details_info": "We searched everywhere and, unfortunately, did not find anything",

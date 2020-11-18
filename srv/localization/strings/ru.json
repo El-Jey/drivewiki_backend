@@ -8,7 +8,12 @@
     "vehiclesError": "Нет данных о транспортных средствах",
     "motorcycles": "Мотоциклы",
     "vehicle": "Вид транспорта",
-    "empty_search_results": "Информация не найдена"
+    "empty_search_results": "Информация не найдена",
+    "search_settings": {
+      "all": "Все",
+      "cars": "Автомобили",
+      "motorcycles": "Мотоциклы"
+    }
   },
   "main_content": {
     "empty_details_info": "Мы искали везде и, к сожалению, ничего не нашли",

@@ -44,7 +44,7 @@ router.get('/localization/:locale', (req, res) => {
  ** Глобальный поиск по сайту
  */
 router.post('/vehicles/search', (req, res) => {
-  common.globalSearch(req.body.search)
+  common.globalSearch(req.body)
     .then((response) => {
       return res.status(200).json(response);
     })
