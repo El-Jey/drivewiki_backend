@@ -8,6 +8,8 @@ const getVehicleTypes = () => {
 
     mysql.promise().execute(query)
       .then(([results]) => {
+
+        // TODO: продумать логику и макеты, если нет данных
         // if (!results.length) {
         //   return resolve({
         //     status: false,
