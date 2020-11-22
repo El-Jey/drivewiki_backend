@@ -78,19 +78,20 @@ const globalSearch = (request) => {
     let searchString = '%' + request.searchString + '%';
     let types = request.filters.vehicles;
 
-    let query = 'SELECT b.`name` AS brand, m.`name` AS model, m.vehicle_type AS type '  +
-                'FROM brands b '                                                        +
-                'INNER JOIN models m ON b.id = m.brand_id '                             +
-                'WHERE b.`name` LIKE ? '                                                +
-                'OR m.`name` LIKE ? '                                                   +
-                'AND m.vehicle_type IN (?) '                                            +
-                'ORDER by b.`name`';
+    let query = 'SELECT b.`name` AS brand, m.`name` AS model, m.vehicle_type AS `type` '  +
+                'FROM brands b '                                                          +
+                'INNER JOIN models m ON b.id = m.brand_id '                               +
+                'WHERE (b.`name` LIKE ? OR m.`name` LIKE ?)';
+                
+    let values = [searchString, searchString];
 
-    let data = [searchString, searchString, [types]];
+    if (types.length) {
+      query += ' AND m.vehicle_type IN (?)';
+      values.push(types);
+    }
+    query += ' ORDER by b.`name`';
 
-    console.log(query);
-
-    mysql.promise().execute(query, data)
+    mysql.promise().execute(mysql.format(query, values))
       .then(([results]) => {
         if (!results.length) {
           return resolve({
