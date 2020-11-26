@@ -84,7 +84,7 @@ const globalSearch = (request) => {
                 'FROM brands b '                                                          +
                 'INNER JOIN models m ON b.id = m.brand_id '                               +
                 'WHERE (b.`name` LIKE ? OR m.`name` LIKE ?)';
-                
+
     let values = [searchString, searchString];
 
     if (types.length) {
@@ -136,19 +136,20 @@ const filterByVehicleType = (resultsArray, type) => {
  */
 const sortVehiclesByManufacturer = (filteredArray) => {
   let data = [],
-    brand,
+    brand = '',
     models = [],
     object = {};
 
-  for (let i = 0; i < filteredArray.length; i++) {
-    if (filteredArray.length == 1) {
-      models.push(filteredArray[i].model);
-      object.brand = filteredArray[i].brand;
-      object.models = models;
-      data.push(object);
-      break;
-    }
+  if (filteredArray.length == 1) {
+    models.push(filteredArray[0].model);
+    object.brand = filteredArray[0].brand;
+    object.models = models;
+    object.type = filteredArray[0].type;
+    data.push(object);
+    return data;
+  }
 
+  for (let i = 0, length = filteredArray.length; i < length; i++) {
     if (i == 0) {
       brand = filteredArray[i].brand;
       models.push(filteredArray[i].model);
@@ -160,17 +161,19 @@ const sortVehiclesByManufacturer = (filteredArray) => {
     } else {
       object.brand = brand;
       object.models = models;
+      object.type = filteredArray[i].type;
       data.push(object);
 
       object = {};
-      models = [],
-        brand = filteredArray[i].brand;
+      models = [];
+      brand = filteredArray[i].brand;
       models.push(filteredArray[i].model);
     }
 
-    if (i == filteredArray.length - 1) {
+    if (i === filteredArray.length - 1) {
       object.brand = brand;
       object.models = models;
+      object.type = filteredArray[i].type;
       data.push(object);
     }
   }

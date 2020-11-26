@@ -8,11 +8,12 @@ const mysql = require('../database');
  ** result - object,
  */
 const getCarsList = (callback) => {
-  let query = 'SELECT b.`name` AS brand, m.`name` AS model ' +
-    'FROM brands b ' +
-    'INNER JOIN models m ON m.vehicle_type = 1 ' +
-    'WHERE b.id = m.brand_id ' +
-    'ORDER by b.`name`';
+  let query = 'SELECT b.`name` AS brand, m.`name` AS model '  +
+              'FROM brands b '                                +
+              'INNER JOIN models m ON m.vehicle_type = 1 '    +
+              'WHERE b.id = m.brand_id '                      +
+              'ORDER by b.`name`';
+
   mysql.execute(query, function (err, results) {
     if (err) {
       return callback(err, null);
@@ -23,66 +24,149 @@ const getCarsList = (callback) => {
         status: false,
         error: 'empty_data'
       }, null);
-    } else {
-      // Slower algorythm
-      // let cars = [];
-      // cars = results.reduce((acc, current) => {
-      //   let accIndex = acc.findIndex(element => {
-      //     return element.brand === current.brand;
-      //   });
+    }
+    // 1) for loop - 0.055 ms
+    // 2) for of loop - 0.078 ms
+    // 3) forEach - 0.087 ms
+    // 4) array.reduce - 0.124 ms
+    // let cars = [];
+    // console.time('array reduce');
+    // cars = results.reduce((acc, current) => {
+    //   let accIndex = acc.findIndex(element => {
+    //     return element.brand === current.brand;
+    //   });
 
-      //   accIndex !== -1 ?
-      //     acc[accIndex].models.push(current.model) :
-      //     acc.push(Object.assign({}, {
-      //       brand: current.brand,
-      //       models: [current.model]
-      //     }));
-      //   return acc;
-      // }, cars);
+    //   accIndex !== -1 ?
+    //     acc[accIndex].models.push(current.model) :
+    //     acc.push(Object.assign({}, {
+    //       brand: current.brand,
+    //       models: [current.model]
+    //     }));
+    //   return acc;
+    // }, cars);
+    // console.timeEnd('array reduce');
 
-      // Faster algorythm
-      let cars = [],
-        brand,
-        models = [],
-        object = {};
 
-      for (var i = 0; i < results.length; i++) {
-        if (results.length == 1) {
-          models.push(results[i].model);
-          object.brand = results[i].brand;
-          object.models = models;
-          cars.push(object);
-          break;
-        }
+    let cars = [];
+    let brand;
+    let models = [];
+    let object = {};
 
-        if (i == 0) {
-          brand = results[i].brand;
-          models.push(results[i].model);
-          continue;
-        }
-
-        if (results[i].brand === brand) {
-          models.push(results[i].model);
-        } else {
-          object.brand = brand;
-          object.models = models;
-          cars.push(object);
-
-          object = {};
-          models = [],
-            brand = results[i].brand;
-          models.push(results[i].model);
-        }
-
-        if (i == results.length - 1) {
-          object.brand = brand;
-          object.models = models;
-          cars.push(object);
-        }
-      }
-
+    if (results.length == 1) {
+      models.push(results[0].model);
+      object.brand = results[0].brand;
+      object.models = models;
+      cars.push(object);
       return callback(null, cars);
     }
+
+    // console.time('forEach loop');
+    // results.forEach((element, i) => {
+    //   if (i == 0) {
+    //     brand = element.brand;
+    //     models.push(element.model);
+    //     return;
+    //   }
+
+    //   if (element.brand === brand) {
+    //     models.push(element.model);
+    //   } else {
+    //     object.brand = brand;
+    //     object.models = models;
+    //     cars.push(object);
+
+    //     object = {};
+    //     models = [];
+    //     brand = element.brand;
+    //     models.push(element.model);
+    //   }
+
+    //   if (i == results.length - 1) {
+    //     object.brand = brand;
+    //     object.models = models;
+    //     cars.push(object);
+    //   }
+    // });
+    // console.timeEnd('forEach loop');
+
+
+    // cars = [];
+    // brand;
+    // models = [];
+    // object = {};
+    console.time('For loop');
+    for (let i = 0, length = results.length; i < length; i++) {
+      if (i == 0) {
+        brand = results[i].brand;
+        models.push(results[i].model);
+        continue;
+      }
+
+      if (results[i].brand === brand) {
+        models.push(results[i].model);
+      } else {
+        object.brand = brand;
+        object.models = models;
+        cars.push(object);
+
+        object = {};
+        models = [];
+        brand = results[i].brand;
+        models.push(results[i].model);
+      }
+
+      if (i === results.length - 1) {
+        object.brand = brand;
+        object.models = models;
+        cars.push(object);
+      }
+    }
+    console.timeEnd('For loop');
+
+
+
+    // cars = [];
+    // brand;
+    // models = [];
+    // object = {};
+    // console.time('for of loop');
+
+    // let i = 0;
+    // for (let el of results) {
+    //   if (i == 0) {
+    //     brand = el.brand;
+    //     models.push(el.model);
+    //     i++;
+    //     continue;
+    //   }
+
+    //   if (el.brand === brand) {
+    //     models.push(el.model);
+    //   } else {
+    //     object.brand = brand;
+    //     object.models = models;
+    //     cars.push(object);
+
+    //     object = {};
+    //     models = [];
+    //     brand = el.brand;
+    //     models.push(el.model);
+    //   }
+
+    //   if (i == results.length - 1) {
+    //     object.brand = brand;
+    //     object.models = models;
+    //     cars.push(object);
+    //   }
+
+    //   i++;
+    // }
+    // console.timeEnd('for of loop');
+
+
+
+
+    return callback(null, cars);
   });
 }
 

@@ -13,27 +13,28 @@ const getMotorcyclesList = (callback) => {
               'INNER JOIN models m ON m.vehicle_type = 2 '      +
               'WHERE b.id = m.brand_id '                        +
               'ORDER by b.`name`';
+              
   mysql.execute(query, function(err, results) {
     if (err) {
       return callback(err, null);
     }
     if (!results.length) {
       return callback({ status: false, error: 'empty_data' }, null);
-    } else {
+    }
       let motorcycles = [],
         brand,
         models = [],
         object = {};
 
-      for (var i = 0; i < results.length; i++) {
         if (results.length == 1) {
-          models.push(results[i].model);
-          object.brand = results[i].brand;
+          models.push(results[0].model);
+          object.brand = results[0].brand;
           object.models = models;
           motorcycles.push(object);
-          break;
+          return callback(null, motorcycles);
         }
 
+      for (let i = 0, length = results.length; i < length; i++) {
         if (i == 0) {
           brand = results[i].brand;
           models.push(results[i].model);
@@ -48,19 +49,18 @@ const getMotorcyclesList = (callback) => {
           motorcycles.push(object);
 
           object = {};
-          models = [],
+          models = [];
           brand = results[i].brand;
           models.push(results[i].model);
         }
 
-        if (i == results.length - 1) {
+        if (i === results.length - 1) {
           object.brand = brand;
           object.models = models;
           motorcycles.push(object);
         }
       }
       return callback(null, motorcycles);
-    }
   });
 }
 
